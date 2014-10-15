@@ -45,15 +45,7 @@ Server.prototype.init = function() {
 Server.prototype.initLocal = function() {
   var self = this;
   var io = this.io;
-
-  this.warning('Only accepting local connections.'),
-  io.on('connection', function(socket) {
-    var address = socket.request.connection.remoteAddress;
-    if (address !== '127.0.0.1' && address !== '::1') {
-      self.log('Attempted connection from %s. Refused.', address);
-    }
-    else return self.handleConnection(socket);
-  });
+  return self.handleConnection(socket);
 };
 
 Server.prototype.initIO = function() {
@@ -94,9 +86,9 @@ Server.prototype.handleConnection = function(socket) {
     if (data.cmd == 'request paste') {
       return session.handlePaste();
     }
-    
+
     return console.log("Unknown message received: %s", JSON.stringify(data));
-    
+
   });
   socket.on('close', function() {
     return session.handleDisconnect();
