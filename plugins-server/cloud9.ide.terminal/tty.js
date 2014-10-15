@@ -45,7 +45,9 @@ Server.prototype.init = function() {
 Server.prototype.initLocal = function() {
   var self = this;
   var io = this.io;
-  return self.handleConnection(socket);
+  io.on('connection', function(socket) {
+    return self.handleConnection(socket);
+  });
 };
 
 Server.prototype.initIO = function() {
